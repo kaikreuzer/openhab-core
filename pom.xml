@@ -174,7 +174,7 @@ Import-Package: \\
   org.eclipse.smarthome.*
 -sources: false
 -contract: *
--dsannotations-options: norequirements
+${opt.bndinstruction.1}
 ]]></bnd>
             <!-- Bundle-SymbolicName: ${project.groupId}.${project.artifactId} -->
           </configuration>
@@ -577,6 +577,17 @@ Import-Package: \\
           </plugins>
         </pluginManagement>
       </build>
+    </profile>
+    <profile>
+      <id>ohd-build</id>
+      <activation>
+        <property>
+          <name>ohdBuild</name>
+        </property>
+      </activation>
+      <properties>
+        <opt.bndinstruction.1>-dsannotations-options: norequirements</opt.bndinstruction.1>
+      </properties>
     </profile>
   </profiles>
 
