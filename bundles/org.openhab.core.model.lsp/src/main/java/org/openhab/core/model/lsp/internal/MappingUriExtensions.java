@@ -57,14 +57,14 @@ public class MappingUriExtensions extends UriExtensions {
     @Override
     public URI toUri(String pathWithScheme) {
         String decodedPathWithScheme = URLDecoder.decode(pathWithScheme, StandardCharsets.UTF_8);
-        String localClientLocation = clientLocation;
-        if (localClientLocation != null && decodedPathWithScheme.startsWith(localClientLocation)) {
+
+        if (clientLocation != null && decodedPathWithScheme.startsWith(clientLocation)) {
             return map(decodedPathWithScheme);
         }
 
-        localClientLocation = clientLocation = guessClientPath(decodedPathWithScheme);
-        if (localClientLocation != null) {
-            logger.debug("Identified client workspace as '{}'", localClientLocation);
+        clientLocation = guessClientPath(decodedPathWithScheme);
+        if (clientLocation != null) {
+            logger.debug("Identified client workspace as '{}'", clientLocation);
             return map(decodedPathWithScheme);
         }
 
@@ -89,10 +89,8 @@ public class MappingUriExtensions extends UriExtensions {
     }
 
     private String mapToClientPath(String pathWithScheme) {
-        String clientLocation = this.clientLocation;
-        String uriString = clientLocation == null ? serverLocation
-                : pathWithScheme.replace(serverLocation, clientLocation);
-        String clientPath = toPathAsInXtext212(java.net.URI.create(uriString));
+        String clientPath = toPathAsInXtext212(
+                java.net.URI.create(pathWithScheme.replace(serverLocation, clientLocation)));
         logger.trace("Mapping server path {} to client path {}", pathWithScheme, clientPath);
         return clientPath;
     }

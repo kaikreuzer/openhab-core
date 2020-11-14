@@ -65,13 +65,8 @@ public class SafeCallerBuilderImpl<T> implements SafeCallerBuilder<T> {
                 handler = new InvocationHandlerSync<>(manager, target, identifier, timeout, exceptionHandler,
                         timeoutHandler);
             }
-            ClassLoader classLoader = getClass().getClassLoader();
-            if (classLoader == null) {
-                throw new IllegalStateException(
-                        "Cannot create proxy because '" + getClass().getName() + "' class loader is null");
-            }
             return (T) Proxy.newProxyInstance(
-                    CombinedClassLoader.fromClasses(classLoader,
+                    CombinedClassLoader.fromClasses(getClass().getClassLoader(),
                             Stream.concat(Stream.of(target.getClass()), Arrays.stream(interfaceTypes))),
                     interfaceTypes, handler);
         });

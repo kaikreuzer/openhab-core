@@ -387,9 +387,8 @@ public class PersistenceManagerImpl implements ItemRegistryChangeListener, Persi
     public void removeConfig(final String dbId) {
         synchronized (persistenceServiceConfigs) {
             stopEventHandling(dbId);
-            PersistenceService persistenceService = persistenceServices.get(dbId);
-            if (persistenceService != null) {
-                persistenceServiceConfigs.put(dbId, getDefaultConfig(persistenceService));
+            if (persistenceServices.containsKey(dbId)) {
+                persistenceServiceConfigs.put(dbId, getDefaultConfig(persistenceServices.get(dbId)));
                 startEventHandling(dbId);
             } else {
                 persistenceServiceConfigs.remove(dbId);

@@ -81,10 +81,9 @@ public class ScriptedCustomModuleTypeProvider implements ModuleTypeProvider {
 
     public void removeModuleType(String moduleTypeUID) {
         ModuleType element = modulesTypes.remove(moduleTypeUID);
-        if (element != null) {
-            for (ProviderChangeListener<ModuleType> listener : listeners) {
-                listener.removed(this, element);
-            }
+
+        for (ProviderChangeListener<ModuleType> listener : listeners) {
+            listener.removed(this, element);
         }
     }
 

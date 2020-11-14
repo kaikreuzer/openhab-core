@@ -146,10 +146,8 @@ public class SseBroadcaster<@NonNull I> implements Closeable {
     }
 
     private void handleRemoval(final SseEventSink sink) {
-        final @Nullable I info = sinks.remove(sink);
-        if (info != null) {
-            notifyAboutRemoval(sink, info);
-        }
+        final I info = sinks.remove(sink);
+        notifyAboutRemoval(sink, info);
     }
 
     private void notifyAboutRemoval(final SseEventSink sink, I info) {

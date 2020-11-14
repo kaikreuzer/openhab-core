@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.core.config.xml.util.ConverterAttributeMapValidator;
 import org.openhab.core.config.xml.util.GenericUnmarshaller;
 import org.openhab.core.config.xml.util.NodeIterator;
@@ -43,7 +41,6 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
  *
  * @author Michael Grammling - Initial contribution
  */
-@NonNullByDefault
 public class StateDescriptionConverter extends GenericUnmarshaller<StateDescription> {
 
     protected ConverterAttributeMapValidator attributeMapValidator;
@@ -55,8 +52,8 @@ public class StateDescriptionConverter extends GenericUnmarshaller<StateDescript
                 { "max", "false" }, { "step", "false" }, { "pattern", "false" }, { "readOnly", "false" } });
     }
 
-    private @Nullable BigDecimal toBigDecimal(Map<String, String> attributes, String attribute,
-            @Nullable BigDecimal defaultValue) throws ConversionException {
+    private BigDecimal toBigDecimal(Map<String, String> attributes, String attribute, BigDecimal defaultValue)
+            throws ConversionException {
         String attrValueText = attributes.get(attribute);
 
         if (attrValueText != null) {
@@ -71,9 +68,14 @@ public class StateDescriptionConverter extends GenericUnmarshaller<StateDescript
         return defaultValue;
     }
 
-    private boolean toBoolean(Map<String, String> attributes, String attribute, boolean defaultValue) {
+    private boolean toBoolean(Map<String, String> attributes, String attribute, Boolean defaultValue) {
         String attrValueText = attributes.get(attribute);
-        return attrValueText == null ? defaultValue : Boolean.valueOf(attrValueText);
+
+        if (attrValueText != null) {
+            return Boolean.valueOf(attrValueText);
+        }
+
+        return defaultValue;
     }
 
     private List<StateOption> toListOfChannelState(NodeList nodeList) throws ConversionException {
@@ -102,43 +104,28 @@ public class StateDescriptionConverter extends GenericUnmarshaller<StateDescript
     }
 
     @Override
-    public final @Nullable Object unmarshal(@NonNullByDefault({}) HierarchicalStreamReader reader,
-            @NonNullByDefault({}) UnmarshallingContext context) {
+    public final Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
         Map<String, String> attributes = this.attributeMapValidator.readValidatedAttributes(reader);
 
-        boolean readOnly = toBoolean(attributes, "readOnly", false);
-        StateDescriptionFragmentBuilder builder = StateDescriptionFragmentBuilder.create().withReadOnly(readOnly);
-
         BigDecimal minimum = toBigDecimal(attributes, "min", null);
-        if (minimum != null) {
-            builder.withMinimum(minimum);
-        }
-
         BigDecimal maximum = toBigDecimal(attributes, "max", null);
-        if (maximum != null) {
-            builder.withMaximum(maximum);
-        }
-
         BigDecimal step = toBigDecimal(attributes, "step", null);
-        if (step != null) {
-            builder.withStep(step);
-        }
-
         String pattern = attributes.get("pattern");
-        if (pattern != null) {
-            builder.withPattern(pattern);
-        }
+        boolean readOnly = toBoolean(attributes, "readOnly", false);
+
+        StateDescriptionFragmentBuilder stateDescriptionFragmentBuilder = StateDescriptionFragmentBuilder.create()
+                .withMinimum(minimum).withMaximum(maximum).withStep(step).withPattern(pattern).withReadOnly(readOnly);
 
         NodeList nodes = (NodeList) context.convertAnother(context, NodeList.class);
         NodeIterator nodeIterator = new NodeIterator(nodes.getList());
 
         NodeList optionNodes = (NodeList) nodeIterator.next();
         if (optionNodes != null) {
-            builder.withOptions(toListOfChannelState(optionNodes));
+            stateDescriptionFragmentBuilder.withOptions(toListOfChannelState(optionNodes));
         }
 
         nodeIterator.assertEndOfType();
 
-        return builder.build().toStateDescription();
+        return stateDescriptionFragmentBuilder.build().toStateDescription();
     }
 }

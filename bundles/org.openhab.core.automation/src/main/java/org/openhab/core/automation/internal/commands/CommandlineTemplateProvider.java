@@ -244,7 +244,7 @@ public class CommandlineTemplateProvider extends AbstractCommandProvider<RuleTem
         }
     }
 
-    protected void notifyListeners(@Nullable RuleTemplate oldElement, RuleTemplate newElement) {
+    protected void notifyListeners(RuleTemplate oldElement, RuleTemplate newElement) {
         synchronized (listeners) {
             for (ProviderChangeListener<RuleTemplate> listener : listeners) {
                 if (oldElement != null) {
@@ -255,7 +255,7 @@ public class CommandlineTemplateProvider extends AbstractCommandProvider<RuleTem
         }
     }
 
-    protected void notifyListeners(@Nullable RuleTemplate removedObject) {
+    protected void notifyListeners(RuleTemplate removedObject) {
         if (removedObject != null) {
             synchronized (listeners) {
                 for (ProviderChangeListener<RuleTemplate> listener : listeners) {

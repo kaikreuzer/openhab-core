@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -535,15 +534,13 @@ public final class PersistentInbox implements Inbox, DiscoveryListener, ThingReg
         final List<ConfigDescriptionParameter> configDescParams = getConfigDescParams(discoveryResult);
         final Set<String> paramNames = getConfigDescParamNames(configDescParams);
         final Map<String, Object> resultProps = discoveryResult.getProperties();
-        for (Entry<String, Object> resultEntry : resultProps.entrySet()) {
-            String resultKey = resultEntry.getKey();
-            Object resultValue = resultEntry.getValue();
+        for (String resultKey : resultProps.keySet()) {
             if (paramNames.contains(resultKey)) {
                 ConfigDescriptionParameter param = getConfigDescriptionParam(configDescParams, resultKey);
-                Object normalizedValue = ConfigUtil.normalizeType(resultValue, param);
+                Object normalizedValue = ConfigUtil.normalizeType(resultProps.get(resultKey), param);
                 configParams.put(resultKey, normalizedValue);
             } else {
-                props.put(resultKey, String.valueOf(resultValue));
+                props.put(resultKey, String.valueOf(resultProps.get(resultKey)));
             }
         }
     }

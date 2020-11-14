@@ -79,31 +79,29 @@ public class JsonStorageService implements StorageService {
             return;
         }
 
-        Object value = properties.get(CFG_MAX_BACKUP_FILES);
         try {
-            if (value != null) {
-                maxBackupFiles = Integer.parseInt((String) value);
+            if (properties.get(CFG_MAX_BACKUP_FILES) != null) {
+                maxBackupFiles = Integer.parseInt((String) properties.get(CFG_MAX_BACKUP_FILES));
             }
         } catch (NumberFormatException nfe) {
-            logger.error("Value {} for {} is invalid. Using {}.", value, CFG_MAX_BACKUP_FILES, maxBackupFiles);
+            logger.error("Value {} for {} is invalid. Using {}.", properties.get(CFG_MAX_BACKUP_FILES),
+                    CFG_MAX_BACKUP_FILES, maxBackupFiles);
         }
-
-        value = properties.get(CFG_WRITE_DELAY);
         try {
-            if (value != null) {
-                writeDelay = Integer.parseInt((String) value);
+            if (properties.get(CFG_WRITE_DELAY) != null) {
+                writeDelay = Integer.parseInt((String) properties.get(CFG_WRITE_DELAY));
             }
         } catch (NumberFormatException nfe) {
-            logger.error("Value {} for {} is invalid. Using {}.", value, CFG_WRITE_DELAY, writeDelay);
+            logger.error("Value {} for {} is invalid. Using {}.", properties.get(CFG_WRITE_DELAY), CFG_WRITE_DELAY,
+                    writeDelay);
         }
-
-        value = properties.get(CFG_MAX_DEFER_DELAY);
         try {
-            if (value != null) {
-                maxDeferredPeriod = Integer.parseInt((String) value);
+            if (properties.get(CFG_MAX_DEFER_DELAY) != null) {
+                maxDeferredPeriod = Integer.parseInt((String) properties.get(CFG_MAX_DEFER_DELAY));
             }
         } catch (NumberFormatException nfe) {
-            logger.error("Value {} for {} is invalid. Using {}.", value, CFG_MAX_DEFER_DELAY, maxDeferredPeriod);
+            logger.error("Value {} for {} is invalid. Using {}.", properties.get(CFG_MAX_DEFER_DELAY),
+                    CFG_MAX_DEFER_DELAY, maxDeferredPeriod);
         }
     }
 

@@ -17,7 +17,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.core.items.Item;
 import org.openhab.core.items.ItemNotFoundException;
 import org.openhab.core.items.ItemRegistry;
@@ -65,10 +64,7 @@ public class ItemRegistryDelegate implements Map<String, State> {
     }
 
     @Override
-    public State get(@Nullable Object key) {
-        if (key == null) {
-            return null;
-        }
+    public State get(Object key) {
         final Item item = itemRegistry.get((String) key);
         if (item == null) {
             return null;

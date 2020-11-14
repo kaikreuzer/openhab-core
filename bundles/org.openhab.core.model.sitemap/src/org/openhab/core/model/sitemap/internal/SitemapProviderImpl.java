@@ -111,10 +111,7 @@ public class SitemapProviderImpl implements SitemapProvider, ModelRepositoryChan
         sitemapModelCache.clear();
         Iterable<String> sitemapNames = modelRepo.getAllModelNamesOfType(SITEMAP_MODEL_NAME);
         for (String sitemapName : sitemapNames) {
-            Sitemap sitemap = (Sitemap) modelRepo.getModel(sitemapName);
-            if (sitemap != null) {
-                sitemapModelCache.put(sitemapName, sitemap);
-            }
+            sitemapModelCache.put(sitemapName, (Sitemap) modelRepo.getModel(sitemapName));
         }
     }
 

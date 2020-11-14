@@ -49,10 +49,7 @@ public class BindingInfoReader extends XmlDocumentReader<BindingInfoXmlResult> {
      * The default constructor of this class.
      */
     public BindingInfoReader() {
-        ClassLoader classLoader = BindingInfoReader.class.getClassLoader();
-        if (classLoader != null) {
-            super.setClassLoader(classLoader);
-        }
+        super.setClassLoader(BindingInfoReader.class.getClassLoader());
     }
 
     @Override

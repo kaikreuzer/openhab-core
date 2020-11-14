@@ -19,7 +19,6 @@ import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.openhab.core.ui.tiles.ExternalServiceTile;
-import org.openhab.core.ui.tiles.ExternalServiceTile.TileBuilder;
 import org.openhab.core.ui.tiles.Tile;
 import org.openhab.core.ui.tiles.TileProvider;
 import org.osgi.service.component.annotations.Activate;
@@ -76,20 +75,18 @@ public class TileService implements TileProvider {
                     // get prefix from link name
                     String linkname = key.substring(0, key.length() - LINK_NAME.length());
 
-                    String name = (String) properties.getOrDefault(linkname + LINK_NAME, "");
-                    String url = (String) properties.getOrDefault(linkname + LINK_URL, "");
-                    String imageUrl = (String) properties.getOrDefault(linkname + LINK_IMAGEURL, "");
+                    String name = (String) properties.get(linkname + LINK_NAME);
+                    String url = (String) properties.get(linkname + LINK_URL);
+                    String imageUrl = (String) properties.get(linkname + LINK_IMAGEURL);
+
+                    Tile newTile = new ExternalServiceTile.TileBuilder().withName(name).withUrl(url)
+                            .withImageUrl(imageUrl).build();
 
                     if (!name.isEmpty() && !url.isEmpty()) {
-                        TileBuilder builder = new ExternalServiceTile.TileBuilder().withName(name).withUrl(url);
-                        if (!imageUrl.isEmpty()) {
-                            builder = builder.withImageUrl(imageUrl);
-                        }
-                        Tile newTile = builder.build();
                         addTile(newTile);
                         logger.debug("Tile added: {}", newTile);
                     } else {
-                        logger.warn("Ignore invalid tile '{}': {}", linkname, name);
+                        logger.warn("Ignore invalid tile '{}': {}", linkname, newTile);
                     }
                 }
             }

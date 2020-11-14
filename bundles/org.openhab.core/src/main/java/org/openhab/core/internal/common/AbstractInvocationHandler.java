@@ -89,19 +89,17 @@ abstract class AbstractInvocationHandler<T> {
     }
 
     void handleExecutionException(Method method, ExecutionException e) {
-        Throwable cause = e.getCause();
-        if (cause instanceof DuplicateExecutionException) {
-            handleDuplicate(method, (DuplicateExecutionException) cause);
-        } else if (cause instanceof InvocationTargetException) {
-            handleException(method, (InvocationTargetException) cause);
+        if (e.getCause() instanceof DuplicateExecutionException) {
+            handleDuplicate(method, (DuplicateExecutionException) e.getCause());
+        } else if (e.getCause() instanceof InvocationTargetException) {
+            handleException(method, (InvocationTargetException) e.getCause());
         }
     }
 
     void handleException(Method method, InvocationTargetException e) {
-        Throwable cause = e.getCause();
-        logger.error(MSG_ERROR, toString(method), target, cause == null ? "" : cause.getMessage(), e.getCause());
+        logger.error(MSG_ERROR, toString(method), target, e.getCause().getMessage(), e.getCause());
         if (exceptionHandler != null) {
-            exceptionHandler.accept(cause == null ? e : cause);
+            exceptionHandler.accept(e.getCause());
         }
     }
 

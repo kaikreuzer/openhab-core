@@ -78,9 +78,7 @@ public class SerialPortUtil {
             System.clearProperty(GNU_IO_RXTX_SERIAL_PORTS);
             identifiers = CommPortIdentifier.getPortIdentifiers();
             // Restore the existing serial ports property
-            if (value != null) {
-                System.setProperty(GNU_IO_RXTX_SERIAL_PORTS, value);
-            }
+            System.setProperty(GNU_IO_RXTX_SERIAL_PORTS, value);
         } else {
             identifiers = CommPortIdentifier.getPortIdentifiers();
         }

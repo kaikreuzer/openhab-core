@@ -186,13 +186,9 @@ public class RuleSupportScriptExtension implements ScriptExtensionProvider {
         Map<String, Object> scopeValues = new HashMap<>();
 
         Collection<String> values = PRESETS.get(preset);
-        if (values != null) {
-            for (String value : values) {
-                Object staticType = STATIC_TYPES.get(value);
-                if (staticType != null) {
-                    scopeValues.put(value, staticType);
-                }
-            }
+
+        for (String value : values) {
+            scopeValues.put(value, STATIC_TYPES.get(value));
         }
 
         if (RULE_SUPPORT.equals(preset)) {
