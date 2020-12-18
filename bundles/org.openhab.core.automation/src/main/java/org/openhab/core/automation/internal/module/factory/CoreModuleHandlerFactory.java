@@ -66,7 +66,8 @@ public class CoreModuleHandlerFactory extends BaseModuleHandlerFactory implement
             ItemCommandActionHandler.ITEM_COMMAND_ACTION, GenericEventTriggerHandler.MODULE_TYPE_ID,
             ChannelEventTriggerHandler.MODULE_TYPE_ID, GenericEventConditionHandler.MODULETYPE_ID,
             GenericEventConditionHandler.MODULETYPE_ID, CompareConditionHandler.MODULE_TYPE,
-            SystemTriggerHandler.STARTLEVEL_MODULE_TYPE_ID, RuleEnablementActionHandler.UID, RunRuleActionHandler.UID);
+            SystemTriggerHandler.STARTLEVEL_MODULE_TYPE_ID, SystemTriggerHandler.RULELOADED_MODULE_TYPE_ID,
+            RuleEnablementActionHandler.UID, RunRuleActionHandler.UID);
 
     private ItemRegistry itemRegistry;
     private EventPublisher eventPublisher;
@@ -172,6 +173,8 @@ public class CoreModuleHandlerFactory extends BaseModuleHandlerFactory implement
             } else if (ItemCommandTriggerHandler.MODULE_TYPE_ID.equals(moduleTypeUID)) {
                 return new ItemCommandTriggerHandler((Trigger) module, bundleContext);
             } else if (SystemTriggerHandler.STARTLEVEL_MODULE_TYPE_ID.equals(moduleTypeUID)) {
+                return new SystemTriggerHandler((Trigger) module, bundleContext);
+            } else if (SystemTriggerHandler.RULELOADED_MODULE_TYPE_ID.equals(moduleTypeUID)) {
                 return new SystemTriggerHandler((Trigger) module, bundleContext);
             } else if (ThingStatusTriggerHandler.CHANGE_MODULE_TYPE_ID.equals(moduleTypeUID)
                     || ThingStatusTriggerHandler.UPDATE_MODULE_TYPE_ID.equals(moduleTypeUID)) {

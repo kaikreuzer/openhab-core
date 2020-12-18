@@ -63,7 +63,7 @@ public class SystemTriggerHandler extends BaseTriggerModuleHandler implements Ev
         this.bundleContext = bundleContext;
         if (STARTLEVEL_MODULE_TYPE_ID.equals(module.getTypeUID())) {
             this.startlevel = ((BigDecimal) module.getConfiguration().get(CFG_STARTLEVEL)).intValue();
-        } else if (STARTLEVEL_MODULE_TYPE_ID.equals(module.getTypeUID())) {
+        } else if (RULELOADED_MODULE_TYPE_ID.equals(module.getTypeUID())) {
             this.startlevel = 50;
         } else {
             logger.warn("Module type '{}' is not (yet) handled by this class.", module.getTypeUID());
